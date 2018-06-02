@@ -1,4 +1,4 @@
-package com.chrissetiana.weatherapp;
+package com.chrissetiana.weatherreport;
 
 import org.junit.Test;
 

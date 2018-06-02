@@ -1,4 +1,4 @@
-package com.chrissetiana.weatherapp;
+package com.chrissetiana.weatherreport;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(com.chrissetiana.weatherreport.R.layout.activity_main);
 
-        TextView weatherData = findViewById(R.id.text_weather_data);
+        TextView weatherData = findViewById(com.chrissetiana.weatherreport.R.id.text_weather_data);
 
         String[] dummyWeatherData = {
                 "Today, May 17 - Clear - 17°C / 15°C",
