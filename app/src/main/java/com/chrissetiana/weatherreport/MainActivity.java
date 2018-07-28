@@ -1,37 +1,41 @@
 package com.chrissetiana.weatherreport;
 
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final static String SRC = "https://";
+    TextView weatherData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.chrissetiana.weatherreport.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
-        TextView weatherData = findViewById(com.chrissetiana.weatherreport.R.id.text_weather_data);
+        weatherData = findViewById(R.id.weather_data);
 
-        String[] dummyWeatherData = {
-                "Today, May 17 - Clear - 17°C / 15°C",
-                "Tomorrow - Cloudy - 19°C / 15°C",
-                "Thursday - Rainy- 30°C / 11°C",
-                "Friday - Thunderstorms - 21°C / 9°C",
-                "Saturday - Thunderstorms - 16°C / 7°C",
-                "Sunday - Rainy - 16°C / 8°C",
-                "Monday - Partly Cloudy - 15°C / 10°C",
-                "Tue, May 24 - Meatballs - 16°C / 18°C",
-                "Wed, May 25 - Cloudy - 19°C / 15°C",
-                "Thu, May 26 - Stormy - 30°C / 11°C",
-                "Fri, May 27 - Hurricane - 21°C / 9°C",
-                "Sat, May 28 - Meteors - 16°C / 7°C",
-                "Sun, May 29 - Apocalypse - 16°C / 8°C",
-                "Mon, May 30 - Post Apocalypse - 15°C / 10°C",
-        };
+        WeatherAsyncTask task = new WeatherAsyncTask();
+        task.execute(SRC);
+    }
 
-        for (String dummyWeatherDay : dummyWeatherData) {
-            weatherData.append(dummyWeatherDay + "\n\n\n");
+    private class WeatherAsyncTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            if (strings.length < 1 || strings[0] == null) {
+                return null;
+            }
+
+            return WeatherQuery.fetchData(strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s != null && !s.equals("")) {
+                weatherData.setText(s);
+            }
         }
     }
 }
