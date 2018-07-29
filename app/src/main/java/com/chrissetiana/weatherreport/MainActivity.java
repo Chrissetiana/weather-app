@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String SRC = "https://";
+    // private static final String SRC = "https://andfun-weather.udacity.com/weather";
+    private static final String SRC = "https://andfun-weather.udacity.com/staticweather";
     TextView weatherData;
 
     @Override
@@ -19,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         weatherData = findViewById(R.id.weather_data);
+        loadData();
     }
 
     private void loadData() {
-        WeatherAsyncTask task = new WeatherAsyncTask();
-        task.execute(SRC);
+        new WeatherAsyncTask().execute(SRC);
     }
 
     @Override
@@ -62,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
             if (s != null && !s.equals("")) {
                 weatherData.setText(s);
             }
+
+            setViews();
+        }
+
+        private void setViews() {
+            weatherData.setText(WeatherActivity.getCode() + WeatherActivity.getDesc() + WeatherActivity.getMin() + WeatherActivity.getMax());
         }
     }
 }
