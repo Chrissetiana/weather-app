@@ -4,22 +4,31 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    // private static final String SRC = "https://andfun-weather.udacity.com/weather";
     private static final String SRC = "https://andfun-weather.udacity.com/staticweather";
-    TextView weatherData;
+    private static final int LIST_ITEMS = 14;
+    private WeatherAdapter adapter;
+    private RecyclerView recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        weatherData = findViewById(R.id.weather_data);
+        recycler = findViewById(R.id.weather_data);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(layoutManager);
+        recycler.setHasFixedSize(true);
+
+        adapter = new WeatherAdapter(LIST_ITEMS);
+        recycler.setAdapter(adapter);
+
         loadData();
     }
 
@@ -48,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class WeatherAsyncTask extends AsyncTask<String, Void, String> {
+    class WeatherAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length < 1 || strings[0] == null) {
@@ -61,14 +70,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             if (s != null && !s.equals("")) {
-                weatherData.setText(s);
             }
-
-            setViews();
-        }
-
-        private void setViews() {
-            weatherData.setText(WeatherActivity.getCode() + WeatherActivity.getDesc() + WeatherActivity.getMin() + WeatherActivity.getMax());
         }
     }
 }
