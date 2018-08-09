@@ -15,11 +15,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.TimeZone;
 
 public class WeatherQuery {
 
-    public static String fetchData(String src) {
-        URL url = buildUrl(src);
+    /* use OpenWeatherAPI when everything is working */
+
+    private static final long TIME_IN_SECONDS = 1000;
+    private static final long TIME_IN_MINUTES = TIME_IN_SECONDS * 60;
+    private static final long TIME_IN_HOURS = TIME_IN_MINUTES * 60;
+    private static final long TIME_IN_DAYS = TIME_IN_HOURS * 24;
+    private static final String SRC = "https://andfun-weather.udacity.com/staticweather";
+    private static final int DAYS = 14;
+
+    public static String[] fetchData() {
+        URL url = buildUrl(SRC);
         String response = null;
 
         try {
@@ -27,7 +37,8 @@ public class WeatherQuery {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return getJSONData(response);
     }
 
     private static URL buildUrl(String str) {
@@ -96,39 +107,82 @@ public class WeatherQuery {
         return null;
     }
 
-    private static WeatherActivity getJSONData(String data) {
+    private static String[] getJSONData(String data) {
         if (TextUtils.isEmpty(data)) {
             return null;
         }
 
         try {
             JSONObject object = new JSONObject(data);
+
             String code = object.getString("cod");
+            if (object.has(code)) {
+                int errCode = object.getInt(code);
+                switch (errCode) {
+                    case HttpURLConnection.HTTP_OK:
+                        break;
+                    case HttpURLConnection.HTTP_NOT_FOUND:
+                        return null;
+                    default:
+                        return null;
+                }
+            }
+
             JSONArray list = object.getJSONArray("list");
 
+            String[] count = new String[list.length()];
+
+            long localDate = System.currentTimeMillis();
+            long utcDate = dateFormatUTC(localDate);
+            long startDay = dateFormatNormal(utcDate);
+
             for (int i = 0; i < list.length(); i++) {
+                String date;
+                String highAndLow;
+                long dateTime;
+
                 JSONObject element = list.getJSONObject(i);
 
+                // dateTime = startDay + TIME_IN_DAYS * i;
+
                 JSONObject temp = element.getJSONObject("temp");
-                int min = temp.getInt("min");
-                int max = temp.getInt("max");
+                double min = temp.getDouble("min");
+                double max = temp.getDouble("max");
 
                 JSONArray weather = element.getJSONArray("weather");
                 JSONObject desc = weather.getJSONObject(0);
                 String main = desc.getString("main");
 
-                return new WeatherActivity(code, main, min, max);
+                return count;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    private static long dateFormatLocal(long date) {
+        return date - TimeZone.getDefault().getOffset(date);
+    }
+
+    private static long dateFormatUTC(long date) {
+        return date + TimeZone.getDefault().getOffset(date);
+    }
+
+    private static long dateFormatNormal(long date) {
+        return date / TIME_IN_DAYS * TIME_IN_DAYS;
+    }
+
+    private static String dateFormat(long dateTime, boolean b) {
+        return null;
+    }
 }
 
 /*
-min: list[] temp{} min# max# (roundoff)
+lon: city{} coord{} lon#
+lat: city{} coord{} lat#
+min: list[] temp{} min# (roundoff)
 max: list[] temp{} max# (roundoff)
 desc: list[] weather[] main""
-code to check if it exists: cod""
+code: cod""
  */
