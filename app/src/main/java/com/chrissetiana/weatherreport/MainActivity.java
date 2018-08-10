@@ -1,6 +1,7 @@
 package com.chrissetiana.weatherreport;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements WeatherAdapter.WeatherOnClickHandler {
 
@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity implements WeatherAdapter.We
 
     @Override
     public void onClick(String today) {
-        Toast.makeText(this, today, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(MainActivity.this, WeatherDetail.class);
+        intent.putExtra(Intent.EXTRA_TEXT, today);
+        startActivity(intent);
     }
 
     private void loadData() {
