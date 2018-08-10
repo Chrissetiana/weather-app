@@ -14,8 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements WeatherAdapter.WeatherOnClickHandler {
 
     private WeatherAdapter adapter;
     private RecyclerView recycler;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         recycler.setLayoutManager(layoutManager);
         recycler.setHasFixedSize(true);
 
-        adapter = new WeatherAdapter();
+        adapter = new WeatherAdapter(this);
         recycler.setAdapter(adapter);
 
         emptyText = findViewById(R.id.list_empty);
@@ -65,6 +66,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(String today) {
+        Toast.makeText(this, today, Toast.LENGTH_SHORT).show();
     }
 
     private void loadData() {
