@@ -56,7 +56,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
 
         WeatherViewHolder(View view) {
             super(view);
-            weatherDay = view.findViewById(R.id.weather_day);
+            weatherDay = view.findViewById(R.id.weather_data);
             weatherStatus = view.findViewById(R.id.weather_status);
             weatherMin = view.findViewById(R.id.weather_min);
             weatherMax = view.findViewById(R.id.weather_max);
@@ -64,9 +64,6 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
 
         void bind(String str) {
             weatherDay.setText(str);
-            /*weatherStatus.setText();
-            weatherMin.setText();
-            weatherMax.setText();*/
         }
 
         @Override

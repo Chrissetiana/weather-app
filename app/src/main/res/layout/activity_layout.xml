@@ -1,55 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="@dimen/outer">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/weather_data"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/inner">
-
-        <TextView
-            android:id="@+id/weather_day"
-            android:layout_width="@dimen/none"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Wed, Aug 8" />
-
-        <TextView
-            android:id="@+id/weather_status"
-            android:layout_width="@dimen/none"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Rainy" />
-
-        <TextView
-            android:id="@+id/weather_min"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="@dimen/outer"
-            tools:text="16" />
-
-        <TextView
-            android:id="@+id/weather_max"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingLeft="@dimen/outer"
-            tools:text="24" />
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginLeft="@dimen/inner"
-        android:layout_marginRight="@dimen/inner"
         android:background="#dadada" />
 
 </LinearLayout>
