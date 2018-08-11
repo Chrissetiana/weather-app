@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements WeatherAdapter.We
                 loadData();
                 finish();
                 return true;
+            case R.id.menu_map:
+                loadMap();
+                finish();
+                return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
@@ -88,6 +94,20 @@ public class MainActivity extends AppCompatActivity implements WeatherAdapter.We
     private void showError() {
         recycler.setVisibility(View.INVISIBLE);
         emptyText.setVisibility(View.VISIBLE);
+    }
+
+    private void loadMap() {
+        String address = "1600 Ampitheatre Parkway, CA";
+        Uri uri = Uri.parse("geo:0,0?q=" + address);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(uri);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d("MainActivity", "Error: no app found to load " + uri.toString());
+        }
     }
 
     class WeatherAsyncTask extends AsyncTask<String, Void, String[]> {

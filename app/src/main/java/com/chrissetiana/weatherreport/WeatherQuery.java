@@ -1,5 +1,6 @@
 package com.chrissetiana.weatherreport;
 
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,11 +22,21 @@ public class WeatherQuery {
 
     /* use OpenWeatherAPI when everything is working */
 
+    final static String QUERY_PARAM = "q";
+    final static String LAT_PARAM = "lat";
+    final static String LON_PARAM = "lon";
+    private final static String FORMAT_PARAM = "mode";
+    private final static String UNITS_PARAM = "units";
+    private final static String DAYS_PARAM = "cnt";
+    private static final int numDays = 14;
     private static final long TIME_IN_SECONDS = 1000;
     private static final long TIME_IN_MINUTES = TIME_IN_SECONDS * 60;
     private static final long TIME_IN_HOURS = TIME_IN_MINUTES * 60;
     private static final long TIME_IN_DAYS = TIME_IN_HOURS * 24;
     private static final String SRC = "https://andfun-weather.udacity.com/staticweather";
+
+    private static final String format = "json";
+    private static final String units = "metric";
     private static final int DAYS = 14;
 
     public static String[] fetchData() {
@@ -42,12 +53,22 @@ public class WeatherQuery {
     }
 
     private static URL buildUrl(String str) {
+        Uri uri = Uri.parse(str).buildUpon()
+                // .appendQueryParameter(QUERY_PARAM, location)
+                .appendQueryParameter(FORMAT_PARAM, format)
+                .appendQueryParameter(UNITS_PARAM, units)
+                .appendQueryParameter(DAYS_PARAM, Integer.toString(DAYS))
+                .build();
+
         URL url = null;
         try {
-            url = new URL(str);
+            url = new URL(uri.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+
+        Log.d("WeatherQuery", "url: " + url);
+
         return url;
     }
 
@@ -85,6 +106,7 @@ public class WeatherQuery {
                 inputStream.close();
             }
         }
+
         return response;
     }
 
@@ -158,6 +180,7 @@ public class WeatherQuery {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 

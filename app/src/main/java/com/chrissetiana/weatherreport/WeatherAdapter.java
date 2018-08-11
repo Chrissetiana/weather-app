@@ -10,21 +10,12 @@ import android.widget.TextView;
 
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder> {
 
-    private WeatherActivity weather;
     private static String[] weatherData;
     private final WeatherOnClickHandler clickHandler;
+    private WeatherActivity weather;
 
     WeatherAdapter(WeatherOnClickHandler handler) {
         clickHandler = handler;
-    }
-
-    public interface WeatherOnClickHandler {
-        void onClick(String today);
-    }
-
-    public void setWeatherData(String[] data) {
-        weatherData = data;
-        notifyDataSetChanged();
     }
 
     @NonNull
@@ -45,7 +36,17 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         if (weatherData == null) {
             return 0;
         }
+
         return weatherData.length;
+    }
+
+    public void setWeatherData(String[] data) {
+        weatherData = data;
+        notifyDataSetChanged();
+    }
+
+    public interface WeatherOnClickHandler {
+        void onClick(String today);
     }
 
     class WeatherViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
