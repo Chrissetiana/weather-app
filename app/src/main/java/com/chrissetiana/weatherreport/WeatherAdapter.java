@@ -50,27 +50,21 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
     }
 
     class WeatherViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
-        TextView weatherDay;
-        TextView weatherStatus;
-        TextView weatherMin;
-        TextView weatherMax;
+        TextView weatherData;
 
         WeatherViewHolder(View view) {
             super(view);
-            weatherDay = view.findViewById(R.id.weather_data);
-            weatherStatus = view.findViewById(R.id.weather_status);
-            weatherMin = view.findViewById(R.id.weather_min);
-            weatherMax = view.findViewById(R.id.weather_max);
+            weatherData = view.findViewById(R.id.weather_data);
         }
 
         void bind(String str) {
-            weatherDay.setText(str);
+            weatherData.setText(str);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            String weatherToday = weatherData[position];
+            String weatherToday = WeatherAdapter.weatherData[position];
             clickHandler.onClick(weatherToday);
         }
     }
